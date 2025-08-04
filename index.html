@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Chatbot Test</title>
+</head>
+<body>
+  <h2>Chatbot</h2>
+  <input id="userInput" placeholder="Tapez votre message">
+  <button onclick="sendMessage()">Envoyer</button>
+  <p id="response"></p>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("userInput").value;
+      const responseDiv = document.getElementById("response");
+
+      try {
+        const response = await fetch("https://333be2c4f4a8.ngrok-free.app/chatbot", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ message: input })
+        });
+
+        if (!response.ok) throw new Error("Erreur HTTP");
+
+        const data = await response.json();
+        responseDiv.innerText = data.response;
+      } catch (error) {
+        responseDiv.innerText = "Erreur : " + error.message;
+      }
+    }
+  </script>
+</body>
+</html>
